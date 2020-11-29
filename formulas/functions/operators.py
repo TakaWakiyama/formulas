@@ -94,7 +94,7 @@ LOGIC_OPERATORS = collections.OrderedDict([
     ('<=', lambda x, y: x <= y),
     ('!=', lambda x, y: x != y),
     ('<', lambda x, y: x < y),
-    ('>', lambda x, y: CustomOperation(x, y).gt(),
+    ('>', lambda x, y: x > y,
     ('=', lambda x, y: x == y),
 ])
 OPERATORS.update({k: logic_wrap(v) for k, v in LOGIC_OPERATORS.items()})
