@@ -84,10 +84,10 @@ class CustomOperation:
                 self._x = DateTime.get_datetime_from_str(self._x)
             if date_pattern.match(self._y):
                 self._y = DateTime.get_datetime_from_str(self._y)
-
         except Exception as e:
             print(e)
             self._x, self._y = x, y
+        print(self._x, self._y)
 
     def eq(self):
         return self._x == self._y
