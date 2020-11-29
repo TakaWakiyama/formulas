@@ -24,7 +24,7 @@ class Operator(Token):
     _precedences = {
         ':': 8, ' ': 8, ',': 8, 'u-': 7, 'u+': 7, '%': 6, '^': 5, '*': 4,
         '/': 4, '+': 3, '-': 3, '&': 2, '=': 1, '<': 1, '>': 1, '<=': 1,
-        '>=': 1, '<>': 1
+        '>=': 1, '!=': 1
     }
     _n_args = collections.defaultdict(lambda: 2)
     _n_args.update({'u-': 1, 'u+': 1, '%': 1})

@@ -51,9 +51,9 @@ logic_wrap = functools.partial(
 )
 
 
-def gt(val1, val2):
-    print(val1, val2)
-    return val2 > val2
+def gt(x, y):
+    print(x, y, 'dispatch')
+    return x > y
 
 
 LOGIC_OPERATORS = collections.OrderedDict([
