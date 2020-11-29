@@ -61,7 +61,10 @@ class DateTime:
             [yyyy, mm, dd] = date_str.split("-")
         elif "/" in date:
             [yyyy, mm, dd] = date_str.split("/")
-        elif re.match('[1-2]\\d{3}年[0-1]{1}[0-9]{1}月[0-3]{1}[0-9]{1}日', date_str):
+        elif re.match(
+            '[1-2]\\d{3}年[0-1]{1}[0-9]{1}月[0-3]{1}[0-9]{1}日',
+            date_str
+        ):
             yyyy = date[:4]
             mm = date[5:7]
             dd = date[8:10]
@@ -72,6 +75,7 @@ class DateTime:
 
 
 class CustomOperation:
+
     def __init__(self, x, y):
         try:
             self._x, self._y = x[1], y[1]
@@ -94,7 +98,7 @@ LOGIC_OPERATORS = collections.OrderedDict([
     ('<=', lambda x, y: x <= y),
     ('!=', lambda x, y: x != y),
     ('<', lambda x, y: x < y),
-    ('>', lambda x, y: x > y,
+    ('>', lambda x, y: CustomOperation(x, y).gt()),
     ('=', lambda x, y: x == y),
 ])
 OPERATORS.update({k: logic_wrap(v) for k, v in LOGIC_OPERATORS.items()})
