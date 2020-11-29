@@ -117,12 +117,12 @@ class CustomOperation:
 
 
 LOGIC_OPERATORS = collections.OrderedDict([
-    ('>=', lambda x, y: x >= y),
-    ('<=', lambda x, y: x <= y),
-    ('!=', lambda x, y: x != y),
-    ('<', lambda x, y: x < y),
+    ('>=', lambda x, y: CustomOperation(x, y).gte()),
+    ('<=', lambda x, y: CustomOperation(x, y).lte()),
+    ('!=', lambda x, y: CustomOperation(x, y).neq()),
+    ('<', lambda x, y: CustomOperation(x, y).lt()),
     ('>', lambda x, y: CustomOperation(x, y).gt()),
-    ('=', lambda x, y: x == y),
+    ('=', lambda x, y: CustomOperation(x, y).eq(),
 ])
 OPERATORS.update({k: logic_wrap(v) for k, v in LOGIC_OPERATORS.items()})
 OPERATORS['&'] = wrap_ufunc(
