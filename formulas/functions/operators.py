@@ -122,7 +122,7 @@ LOGIC_OPERATORS = collections.OrderedDict([
     ('!=', lambda x, y: CustomOperation(x, y).neq()),
     ('<', lambda x, y: CustomOperation(x, y).lt()),
     ('>', lambda x, y: CustomOperation(x, y).gt()),
-    ('=', lambda x, y: CustomOperation(x, y).eq(),
+    ('=', lambda x, y: CustomOperation(x, y).eq()),
 ])
 OPERATORS.update({k: logic_wrap(v) for k, v in LOGIC_OPERATORS.items()})
 OPERATORS['&'] = wrap_ufunc(
