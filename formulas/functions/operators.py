@@ -80,8 +80,6 @@ class CustomOperation:
         try:
             self._x, self._y = x[1], y[1]
             date_pattern = re.compile("[1-2]\\d{3}[-/年][0-1]{1}[0-9]{1}[-/月][0-3]{1}[0-9]{1}")
-            print(datetime.match(x[1]))
-            print(datetime.match(y[1]))
             if date_pattern.match(self._x):
                 self._x = DateTime.get_datetime_from_str(self._x)
             if date_pattern.match(self._y):
@@ -92,27 +90,21 @@ class CustomOperation:
             self._x, self._y = x, y
 
     def eq(self):
-        print('eq', self._x, self._y)
         return self._x == self._y
 
     def neq(self):
-        print('neq', self._x, self._y)
         return self._x != self._y
 
     def gt(self):
-        print('gt', self._x, self._y)
         return self._x > self._y
 
     def gte(self):
-        print('gte', self._x, self._y)
         return self._x >= self._y
 
     def lt(self):
-        print('lt', self._x, self._y)
         return self._x < self._y
 
     def lte(self):
-        print('lte', self._x, self._y)
         return self._x <= self._y
 
 
