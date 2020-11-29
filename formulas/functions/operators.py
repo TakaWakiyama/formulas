@@ -49,12 +49,19 @@ logic_wrap = functools.partial(
     wrap_ufunc, input_parser=logic_input_parser, return_func=value_return,
     args_parser=lambda *a: a
 )
+
+
+def gt(val1, val2):
+    print(val1, val2)
+    return val2 > val2
+
+
 LOGIC_OPERATORS = collections.OrderedDict([
     ('>=', lambda x, y: x >= y),
     ('<=', lambda x, y: x <= y),
-    ('<>', lambda x, y: x != y),
+    ('!=', lambda x, y: x != y),
     ('<', lambda x, y: x < y),
-    ('>', lambda x, y: x > y),
+    ('>', lambda x, y: gt(x, y)),
     ('=', lambda x, y: x == y),
 ])
 OPERATORS.update({k: logic_wrap(v) for k, v in LOGIC_OPERATORS.items()})
