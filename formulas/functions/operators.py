@@ -9,9 +9,11 @@
 """
 Python equivalents of Excel operators.
 """
+import datetime
 import schedula as sh
 import functools
 import collections
+import re
 from . import (
     replace_empty, not_implemented, wrap_func, wrap_ufunc, Error, value_return
 )
@@ -49,14 +51,70 @@ logic_wrap = functools.partial(
     wrap_ufunc, input_parser=logic_input_parser, return_func=value_return,
     args_parser=lambda *a: a
 )
+
+
+class DateTime:
+
+    @staticmethod
+    def get_datetime_from_str(date_str):
+        if "-" in date_str:
+            [yyyy, mm, dd] = date_str.split("-")
+        elif "/" in date_str:
+            [yyyy, mm, dd] = date_str.split("/")
+        elif re.match(
+            '[1-2]\\d{3}年[0-1]{1}[0-9]{1}月[0-3]{1}[0-9]{1}日',
+            date_str
+        ):
+            yyyy = date_str[:4]
+            mm = date_str[5:7]
+            dd = date_str[8:10]
+        else:
+            raise ValueError("invalid date_str %s", date_str)
+
+        return datetime.date(int(yyyy), int(mm), int(dd))
+
+
+class CustomOperation:
+
+    def __init__(self, x, y):
+        try:
+            self._x, self._y = x[1], y[1]
+            date_pattern = re.compile("[1-2]\\d{3}[-/年][0-1]{1}[0-9]{1}[-/月][0-3]{1}[0-9]{1}")
+            if date_pattern.match(self._x):
+                self._x = DateTime.get_datetime_from_str(self._x)
+            if date_pattern.match(self._y):
+                self._y = DateTime.get_datetime_from_str(self._y)
+        except Exception:
+            self._x, self._y = x, y
+
+    def eq(self):
+        return self._x == self._y
+
+    def neq(self):
+        return self._x != self._y
+
+    def gt(self):
+        return self._x > self._y
+
+    def gte(self):
+        return self._x >= self._y
+
+    def lt(self):
+        return self._x < self._y
+
+    def lte(self):
+        return self._x <= self._y
+
+
 LOGIC_OPERATORS = collections.OrderedDict([
-    ('>=', lambda x, y: x >= y),
-    ('<=', lambda x, y: x <= y),
-    ('<>', lambda x, y: x != y),
-    ('<', lambda x, y: x < y),
-    ('>', lambda x, y: x > y),
-    ('=', lambda x, y: x == y),
+    ('>=', lambda x, y: CustomOperation(x, y).gte()),
+    ('<=', lambda x, y: CustomOperation(x, y).lte()),
+    ('!=', lambda x, y: CustomOperation(x, y).neq()),
+    ('<', lambda x, y: CustomOperation(x, y).lt()),
+    ('>', lambda x, y: CustomOperation(x, y).gt()),
+    ('=', lambda x, y: CustomOperation(x, y).eq()),
 ])
+
 OPERATORS.update({k: logic_wrap(v) for k, v in LOGIC_OPERATORS.items()})
 OPERATORS['&'] = wrap_ufunc(
     lambda x, y: x + y, input_parser=lambda *a: map(_str, a),
