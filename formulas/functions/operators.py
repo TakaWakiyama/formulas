@@ -59,15 +59,15 @@ class DateTime:
     def get_datetime_from_str(date_str):
         if "-" in date_str:
             [yyyy, mm, dd] = date_str.split("-")
-        elif "/" in date:
+        elif "/" in date_str:
             [yyyy, mm, dd] = date_str.split("/")
         elif re.match(
             '[1-2]\\d{3}年[0-1]{1}[0-9]{1}月[0-3]{1}[0-9]{1}日',
             date_str
         ):
-            yyyy = date[:4]
-            mm = date[5:7]
-            dd = date[8:10]
+            yyyy = date_str[:4]
+            mm = date_str[5:7]
+            dd = date_str[8:10]
         else:
             raise ValueError("invalid date_str %s", date_str)
 
@@ -81,11 +81,12 @@ class CustomOperation:
             self._x, self._y = x[1], y[1]
             date_pattern = re.compile("[1-2]\\d{3}[-/.][0-1]{1}[0-9]{1}[-/.][0-3]{1}[0-9]{1}")
             if date_pattern.match(self._x):
-                self._x = DateTime.get_datetime_from_str(_x)
+                self._x = DateTime.get_datetime_from_str(self._x)
             if date_pattern.match(self._y):
-                self._y = DateTime.get_datetime_from_str(_y)
+                self._y = DateTime.get_datetime_from_str(self._y)
 
-        except Exception:
+        except Exception as e:
+            print(e)
             self._x, self._y = x, y
 
     def gt(self):
